@@ -96,7 +96,7 @@ def predict(model,
             im = paddle.to_tensor(im)
 
             if aug_pred:
-                pred, _  = infer.aug_inference(
+                pred = infer.aug_inference(
                     model,
                     im,
                     ori_shape=ori_shape,
@@ -108,7 +108,7 @@ def predict(model,
                     stride=stride,
                     crop_size=crop_size)
             else:
-                pred, _ = infer.inference(
+                pred = infer.inference(
                     model,
                     im,
                     ori_shape=ori_shape,

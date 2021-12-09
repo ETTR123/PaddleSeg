@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:encnet_small
+model_name:fastfcn_small
 python:python3.7
 gpu_list:0
 Global.use_gpu:null|null
@@ -13,7 +13,7 @@ train_infer_img_dir:test_tipc/data/mini_supervisely/test.txt
 null:null
 ##
 trainer:norm
-norm_train:train.py --config test_tipc/configs/encnet_small/encnet_small_v1_humanseg_192x192_mini_supervisely.yml --do_eval --save_interval 100 --seed 100
+norm_train:train.py --config test_tipc/configs/fastfcn_small/fastfcn_small_v1_humanseg_192x192_mini_supervisely.yml --do_eval --save_interval 100 --seed 100
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -27,7 +27,7 @@ null:null
 ===========================export_params===========================
 --save_dir:
 --model_path:
-norm_export:export.py --config test_tipc/configs/encnet_small/encnet_small_v1_humanseg_192x192_mini_supervisely.yml
+norm_export:export.py --config test_tipc/configs/fastfcn_small/fastfcn_small_v1_humanseg_192x192_mini_supervisely.yml
 quant_export:null
 fpgm_export:null
 distill_export:null
@@ -35,9 +35,9 @@ export1:null
 export2:null
 ===========================infer_params===========================
 infer_model:./test_tipc/output/norm_gpus_0_autocast_null/model.pdparams
-infer_export:export.py --config test_tipc/configs/encnet_small/encnet_small_v1_humanseg_192x192_mini_supervisely.yml
+infer_export:export.py --config test_tipc/configs/fastfcn_small/fastfcn_small_v1_humanseg_192x192_mini_supervisely.yml
 infer_quant:False
-inference:deploy/python/infer.py --save_dir ./test_tipc/output/encnet_small/
+inference:deploy/python/infer.py
 --device:cpu|gpu
 --enable_mkldnn:True|False
 --cpu_threads:1|6
@@ -49,4 +49,4 @@ inference:deploy/python/infer.py --save_dir ./test_tipc/output/encnet_small/
 --save_log_path:null
 --benchmark:True
 --save_dir:
---model_name:encnet_small
+--model_name:fastfcn_small
