@@ -27,7 +27,7 @@ null:null
 ===========================export_params===========================
 --save_dir:
 --model_path:
-norm_export:export.py --config test_tipc/configs/encnet_small/encnet_small_v1_humanseg_192x192_mini_supervisely.yml
+norm_export:export_model.py --config test_tipc/configs/encnet_small/encnet_small_v1_humanseg_192x192_mini_supervisely.yml
 quant_export:null
 fpgm_export:null
 distill_export:null
@@ -35,9 +35,9 @@ export1:null
 export2:null
 ===========================infer_params===========================
 infer_model:./test_tipc/output/norm_gpus_0_autocast_null/model.pdparams
-infer_export:export.py --config test_tipc/configs/encnet_small/encnet_small_v1_humanseg_192x192_mini_supervisely.yml
+infer_export:export_model.py --config test_tipc/configs/encnet_small/encnet_small_v1_humanseg_192x192_mini_supervisely.yml
 infer_quant:False
-inference:deploy/python/infer.py --save_dir ./test_tipc/output/encnet_small/
+inference:infer.py --save_dir ./test_tipc/output/encnet_small/
 --device:cpu|gpu
 --enable_mkldnn:True|False
 --cpu_threads:1|6
