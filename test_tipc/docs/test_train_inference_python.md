@@ -24,7 +24,7 @@ Linux端基础训练预测功能测试的主程序为`test_train_inference_pytho
 
 ### 2.1 安装依赖
 - 安装PaddlePaddle == 2.2.0
-- 安装PaddleC3D依赖
+- 安装依赖
     ```
     pip install  -r ../requirements.txt
     ```
@@ -47,8 +47,8 @@ Linux端基础训练预测功能测试的主程序为`test_train_inference_pytho
 
 - 模式1：lite_train_lite_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/c3d/train_infer_python.txt 'lite_train_lite_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/c3d/train_infer_python.txt 'lite_train_lite_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/encnet_small/train_infer_python.txt 'lite_train_lite_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/encnet_small/train_infer_python.txt 'lite_train_lite_infer'
 ```
 
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如'lite_train_lite_infer'模式下，会运行训练+inference的链条，因此，在`test_tipc/output`文件夹有以下文件：
