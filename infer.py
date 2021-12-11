@@ -352,6 +352,7 @@ class Predictor:
 
             results = output_handle.copy_to_cpu()
             results = self._postprocess(results)
+            self.result_npy = results
 
             if args.benchmark:
                 self.autolog.times.end(stamp=True)
@@ -374,6 +375,10 @@ class Predictor:
             basename, _ = os.path.splitext(basename)
             basename = f'{basename}.png'
             result.save(os.path.join(self.args.save_dir, basename))
+
+    def save_npy(self):
+        array = np.array(self.result_npy)
+        np.save("./out_inference_engine", array)
 
 
 def main(args):
