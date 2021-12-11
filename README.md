@@ -28,7 +28,7 @@
 
 ## 快速开始
 **tipc**
-[TIPC](test_tipc/docs/test_train_inference.md)
+[TIPC](test_tipc/docs/test_train_inference_python.md)
 
 ## 5 代码结构与说明
 **代码结构**
