@@ -2,7 +2,7 @@
 
 
 ## 1 简介
-![images](images/network.png)  
+
 本项目基于paddlepaddle框架复现了ENCNet语义分割模型，ENCNet提取出特征图中的类别信息，同时引出注意力机制损失(se_loss)来提升网络性能。
 
 **论文：**
