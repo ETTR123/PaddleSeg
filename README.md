@@ -1,7 +1,7 @@
 # FastFCN_paddle
 
 ## 1 简介
-![images](images/network.png)  
+
 本项目基于paddlepaddle框架复现了FastFCN语义分割模型，使用的backbone是ENCNet_resnet50，FastFCN利用JPU模块来提升语义分割的效果。
 
 **论文：**
