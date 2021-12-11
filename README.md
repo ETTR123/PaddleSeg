@@ -16,7 +16,7 @@
 
 |NetWork |steps|opt|image_size|batch_size|dataset|memory|card|mIou|config|weight|log|
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-|DMNet|80K|SGD|1024x512|8|CityScapes|32G|4|78.70|[encnet_cityscapes_1024x512_80k.yml](configs/encnet/encnet_cityscapes_1024x512_80k.yml)|[link](https://bj.bcebos.com/v1/ai-studio-cluster-infinite-task/outputs/105022.tar?authorization=bce-auth-v1%2F0ef6765c1e494918bc0d4c3ca3e5c6d1%2F2021-11-24T10%3A37%3A31Z%2F-1%2F%2F1d0504cbdf4fac38dc60c1298e9b632e739d1a2f952485056a8f50ff45f3344b)|[-](-)|
+|ENCNet|80K|SGD|1024x512|8|CityScapes|32G|4|78.70|[encnet_cityscapes_1024x512_80k.yml](configs/encnet/encnet_cityscapes_1024x512_80k.yml)|[link](https://bj.bcebos.com/v1/ai-studio-cluster-infinite-task/outputs/105022.tar?authorization=bce-auth-v1%2F0ef6765c1e494918bc0d4c3ca3e5c6d1%2F2021-11-24T10%3A37%3A31Z%2F-1%2F%2F1d0504cbdf4fac38dc60c1298e9b632e739d1a2f952485056a8f50ff45f3344b)|[-](-)|
 
 
 ## 3 环境依赖
@@ -27,7 +27,8 @@
 
 
 ## 快速开始
-
+**tipc**
+[TIPC](test_tipc/docs/test_train_inference.md)
 
 ## 5 代码结构与说明
 **代码结构**
@@ -38,9 +39,11 @@
 ├─paddleseg  
 ├─test_tipc  
 │  export.py  
+|  export_model.py  
+|  infer.py  
+|  infer_inference.py  
 │  predict.py  
 │  README.md  
-│  README_CN.md  
 │  requirements.txt  
 │  setup.py  
 │  train.py  
