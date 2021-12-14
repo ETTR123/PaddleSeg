@@ -34,18 +34,27 @@
 
 ```python
 
-python3.7 export_model.py --config test_tipc/configs/encnet_small/encnet_small_v1_humanseg_192x192_mini_supervisely.yml --model_path=./test_tipc/output/encnet_small/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/encnet_small/norm_gpus_0_autocast_null
-
+python3.7 export_model.py --config test_tipc/configs/encnet_small/encnet_cityscapes_1024x512_80k.yml --model_path=./test_tipc/output/encnet_small/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/encnet_small/norm_gpus_0_autocast_null
 ```
 
 **预测**
 
+**原图**
+
+<div align="center">
+    <img src="test_tipc\data\origin.PNG" width="500">
+</div>
+
 ```python
 
-python3.7 infer.py --save_dir ./test_tipc/output/encnet_small/ --device=cpu --enable_mkldnn=True --cpu_threads=1 --config=./test_tipc/output/encnet_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/mini_supervisely/test.txt --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/encnet_small/
-python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1_results
+python3.7 infer.py --save_dir test_tipc/output/encnet_small/ --device=gpu --use_trt=False --precision=fp32 --config=./test_tipc/output/encnet_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/cityscapes/infer.list --benchmark=True
 
 ```
+
+**结果**
+<div align="center">
+    <img src="test_tipc\data\gt.PNG" width="500">
+</div>
 
 
 **tipc测试结果截图**
