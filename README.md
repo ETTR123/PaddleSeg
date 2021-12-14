@@ -39,7 +39,7 @@ python3.7 export_model.py --config test_tipc/configs/encnet_small/encnet_citysca
 
 **预测**
 
-
+**原图**
 ![原图](https://github.com/ETTR123/PaddleSeg/blob/encnet/test_tipc/data/origin.png)
 
 ```python
@@ -48,7 +48,7 @@ python3.7 infer.py --save_dir test_tipc/output/encnet_small/ --device=gpu --use_
 
 ```
 
-
+**结果**
 ![结果](https://github.com/ETTR123/PaddleSeg/blob/encnet/test_tipc/data/gt.png)
 
 
