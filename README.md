@@ -40,10 +40,7 @@ python3.7 export_model.py --config test_tipc/configs/encnet_small/encnet_citysca
 **预测**
 
 **原图**
-
-<div align="center">
-    <img src="test_tipc\data\origin.PNG" width="500">
-</div>
+![原图](test_tipc\data\origin.PNG)
 
 ```python
 
@@ -52,9 +49,7 @@ python3.7 infer.py --save_dir test_tipc/output/encnet_small/ --device=gpu --use_
 ```
 
 **结果**
-<div align="center">
-    <img src="test_tipc\data\gt.PNG" width="500">
-</div>
+![结果](test_tipc\data\gt.PNG)
 
 
 **tipc测试结果截图**
