@@ -29,6 +29,50 @@
 **tipc**
 [tipc](test_tipc/docs/test_train_inference_python.md)
 
+**模型动转静**
+
+```python
+
+python3.7 export_model.py --config test_tipc/configs/dmnet_small/dmnet_cityscapes_1024x512_100k.yml --input_shape 1 3 1024 2048 --model_path=./test_tipc/output/dmnet_small/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/dmnet_small/norm_gpus_0_autocast_null
+```
+
+**预测**
+
+**原图**
+![原图](test_tipc/data/origin.png)
+
+```python
+
+python3.7 infer.py --save_dir test_tipc/output/dmnet_small/ --device=gpu --use_trt=False --precision=fp32 --config=./test_tipc/output/dmnet_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/cityscapes/infer.list --benchmark=True
+
+```
+
+**结果**
+![结果](test_tipc/data/gt.png)
+
+```
+#predict
+Class IoU:
+[0.9928 0.9658 0.9803 0.     0.     0.7592 0.     0.8325 0.9707 0.
+ 0.8213 0.9261 0.     0.9527 0.     0.     0.     0.5342 0.7833]
+Class Acc:
+[0.9949 0.9861 0.9875 0.     0.     0.852  0.     0.8785 0.9855 0.
+ 0.9601 0.9849 0.     0.9802 0.     0.     0.     0.9808 0.8817]
+
+#inference
+Class IoU:
+[0.9928 0.9658 0.9803 0.     0.     0.7592 0.     0.8325 0.9707 0.
+ 0.8213 0.9261 0.     0.9527 0.     0.     0.     0.5342 0.7833]
+Class Acc:
+[0.9949 0.9861 0.9875 0.     0.     0.852  0.     0.8785 0.9855 0.
+ 0.9601 0.9849 0.     0.9802 0.     0.     0.     0.9808 0.8817]
+```
+
+**tipc测试结果截图**
+<div align="center">
+    <img src="test_tipc\data\tipc_result.PNG" width="1000">
+</div>
+
 ## 5 代码结构与说明
 **代码结构**
 ```
