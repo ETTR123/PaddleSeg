@@ -51,6 +51,14 @@ python3.7 infer.py --save_dir test_tipc/output/encnet_small/ --device=gpu --use_
 **结果**
 ![结果](https://github.com/ETTR123/PaddleSeg/blob/encnet/test_tipc/data/gt.png)
 
+```
+Class IoU:
+[0.9901 0.9567 0.9707 0.     0.     0.5505 0.     0.7629 0.9697 0.
+ 0.7794 0.9009 0.     0.9517 0.     0.     0.     0.7787 0.7506]
+Class Acc:
+[0.9925 0.9837 0.9747 0.     0.     0.9782 0.     0.9164 0.9841 0.
+ 0.9995 0.9825 0.     0.98   0.     0.     0.     0.9644 0.9798]
+```
 
 **tipc测试结果截图**
 <div align="center">
