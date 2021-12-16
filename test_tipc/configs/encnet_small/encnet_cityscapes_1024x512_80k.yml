@@ -48,7 +48,6 @@ model:
   in_index: [1, 2, 3]
   use_se_loss: True
   add_lateral: True
-  pretrained: test_tipc/output/encnet_small/model.pdparams
 
 optimizer:
   type: sgd
