@@ -53,7 +53,6 @@ loss:
 
 model:
   type: FastFCN
-  pretrained: test_tipc/output/fastfcn_small/model.pdparams
   backbone:
     type: ResNet50_vd
     output_stride: 8
