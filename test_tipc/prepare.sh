@@ -46,12 +46,11 @@ if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
     fi
 fi
 # download data
-if [ ${model_name} == "fcn_hrnetw18_small" ] || [ ${model_name} == "pphumanseg_lite" ] || [ ${model_name} == "deeplabv3p_resnet50" ] || [ ${model_name} == "encnet_small" ] || [ ${model_name} == "fastfcn_small" ] || [ ${model_name} == "dmnet_small" ];then
+if [ ${model_name} == "fcn_hrnetw18_small" ] || [ ${model_name} == "pphumanseg_lite" ] || [ ${model_name} == "deeplabv3p_resnet50" ];then
     rm -rf ./test_tipc/data/mini_supervisely
     wget -nc -P ./test_tipc/data/ https://paddleseg.bj.bcebos.com/humanseg/data/mini_supervisely.zip
     cd ./test_tipc/data/ && unzip mini_supervisely.zip && cd -
-elif [ ${model_name} == "ocrnet_hrnetw18" ] || [ ${model_name} == "bisenetv2" ] || [ ${model_name} == "segformer_b0" ] || [ ${model_name} == "stdc_stdc1" ]|| [ ${model_name} =="ENet" ];
-then
+elif [ ${model_name} == "ocrnet_hrnetw18" ] || [ ${model_name} == "bisenetv2" ] || [ ${model_name} == "segformer_b0" ] || [ ${model_name} == "stdc_stdc1" ];then
     rm -rf ./test_tipc/data/cityscapes
     wget -nc -P ./test_tipc/data/ https://paddleseg.bj.bcebos.com/dataset/cityscapes.tar
     cd ./test_tipc/data/ && tar -xvf cityscapes.tar && cd -
@@ -59,5 +58,8 @@ elif [ ${model_name} == "ppmatting" ];then
     rm -rf ./test_tipc/data/PPM-100
     wget -nc -P ./test_tipc/data/ https://paddleseg.bj.bcebos.com/matting/datasets/PPM-100.zip
     cd ./test_tipc/data/ && unzip PPM-100.zip && cd -
-
+elif [ ${model_name} == "fastfcn_small" ];then
+    rm -rf ./test_tipc/data/ADEChallengeData2016
+    wget -nc -P ./test_tipc/data/ http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip
+    cd ./test_tipc/data/ && unzip ADEChallengeData2016.zip && cd -
 fi

@@ -9,8 +9,31 @@
     <img src="docs/guide.png" width="1000">
 </div>
 
+## 2. 汇总信息
 
-## 2. 测试工具简介
+打通情况汇总如下，已填写的部分表示可以使用本工具进行一键测试，未填写的表示正在支持中。
+
+**字段说明：**
+- 基础训练预测：包括模型训练、Paddle Inference Python预测。
+- 更多训练方式：包括多机多卡、混合精度。
+- 模型压缩：包括裁剪、离线/在线量化、蒸馏。
+- 其他预测部署：包括Paddle Inference C++预测、Paddle Serving部署、Paddle-Lite部署等。
+
+更详细的mkldnn、Tensorrt等预测加速相关功能的支持情况可以查看各测试工具的[更多教程](#more)。
+
+| 算法论文 | 模型名称 | 基础<br>训练预测 | 更多<br>训练方式 | 模型压缩 |  其他预测部署  |
+| :--- | :--- |  :----:  |  :----  |   :----  |   :----  |
+| DeepLabv3p     |PP-HumanSeg-Server (DeepLabv3p_resnet50) | 支持 | 混合精度 | - | - |
+| HRNet     |PP-HumanSeg-Mobile (HRNet_W18_small)    | 支持  | 混合精度 | - | - |
+| ConnectNet | PP-HumanSeg-Lite | 支持 | - | - | - |
+| BiSeNetV2 | BiSeNetV2 | 支持 | - | - | - |
+| OCRNet | OCRNet_HRNetW18 | 支持 | - | - | - |
+| Segformer | Segformer_B0 | 支持 | - | - | - |
+| STDC | STDC_STDC1 | 支持 | - | - | - |
+| MODNet | PP-Matting | 支持 | - | - | - |
+| FastFcn | fastfcn_small | 支持 | - | - | - |
+
+## 3. 测试工具简介
 ### 目录介绍
 
 ```shell
@@ -18,7 +41,7 @@ test_tipc/
 ├── configs/  # 配置文件目录
     ├── fastfcn_small  
         ├── train_infer_python.txt      # 测试Linux上python训练预测（基础训练预测）的配置文件
-        ├── fastfcn_small_v1_humanseg_192x192_mini_supervisely.yml
+        ├── fastfcn_ade20k_520x520_120k.yml
 ├── results/   # 预测结果
 ├── prepare.sh                        # 完成test_*.sh运行所需要的数据和模型下载
 ├── test_train_inference_python.sh    # 测试python训练预测的主程序

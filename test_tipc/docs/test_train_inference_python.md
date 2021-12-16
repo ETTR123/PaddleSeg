@@ -6,18 +6,27 @@ Linux端基础训练预测功能测试的主程序为`test_train_inference_pytho
 
 - 训练相关：
 
-| 算法名称 | 模型名称 | 单机单卡 |
-|  :----  |   :----  |    :----  |
-|  CNN  | fastfcn_small | 正常训练 |
+| 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 | 模型压缩（单机多卡） |
+|  :----  |   :----  |    :----  |  :----   |  :----   |  :----   |
+| DeepLabv3p     |PP-HumanSeg-Server (DeepLabv3p_resnet50)| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |  |  |
+|  HRNet     |PP-HumanSeg-mobile (HRNet_W18_small)  |  正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |  |  |
+| ConnectNet | PP-HumanSeg-Lite| 正常训练  | 正常训练  |  |  |
+| BiSeNetV2 | BiSeNetV2 | 正常训练  | 正常训练  |  |  |
+| OCRNet | OCRNet_HRNetW18 | 正常训练  | 正常训练  |  |  |
+| Segformer | Segformer_B0 | 正常训练  | 正常训练  |  |  |
+| STDC | STDC_STDC1 | 正常训练  | 正常训练  |  |  |
+| MODNet | PP-Matting | 正常训练  | 正常训练  |  |  |
+| FastFcn | fastfcn_small | 正常训练  | 正常训练  |  |  |
 
 
 - 预测相关：基于训练是否使用量化，可以将训练产出的模型可以分为`正常模型`和`量化模型`，这两类模型对应的预测功能汇总如下，
 
 | 模型类型 |device | batchsize | tensorrt | mkldnn | cpu多线程 |
 |  ----   |  ---- |   ----   |  :----:  |   :----:   |  :----:  |
-| 正常模型 | GPU | 1/2 | fp32 | - | - |
-| 正常模型 | CPU | 1/2 | - | - | 支持 |
-
+| 正常模型 | GPU | 1/6 | fp32/fp16 | - | - |
+| 正常模型 | CPU | 1/6 | - | fp32/fp16 | 支持 |
+| 量化模型 | GPU | 1/6 | int8 | - | - |
+| 量化模型 | CPU | 1/6 | - | int8 | 支持 |
 
 ## 2. 测试流程
 
@@ -62,19 +71,16 @@ test_tipc/output/
 
 其中`results_python.log`中包含了每条指令的运行状态，如果运行成功会输出：
 ```
----------------------- lite_train_lite_infer ------------------------
-Run successfully with command - python3.7 train.py --config test_tipc/configs/fastfcn_small/fastfcn_small_v1_humanseg_192x192_mini_supervisely.yml --do_eval --save_interval 100 --seed 100    --save_dir=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null --iters=50     --batch_size=2     !  
-Run successfully with command - python3.7 export_model.py --config test_tipc/configs/fastfcn_small/fastfcn_small_v1_humanseg_192x192_mini_supervisely.yml --model_path=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null!  
-Run successfully with command - python3.7 infer.py --device=cpu --enable_mkldnn=True --cpu_threads=1 --config=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/mini_supervisely/test.txt --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1_results   > ./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1.log 2>&1 !  
-Run successfully with command - python3.7 infer.py --device=cpu --enable_mkldnn=True --cpu_threads=6 --config=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/mini_supervisely/test.txt --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_6_precision_fp32_batchsize_1_results   > ./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_6_precision_fp32_batchsize_1.log 2>&1 !
+Run successfully with command - python3.7 train.py --config test_tipc/configs/fastfcn_small/fastfcn_ade20k_520x520_120k.yml  --save_interval 10 --seed 10    --save_dir=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null --iters=10     --batch_size=2     !  
+Run successfully with command - python3.7 export_model.py --config test_tipc/configs/fastfcn_small/fastfcn_ade20k_520x520_120k.yml --model_path=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null!
+Run successfully with command - python3.7 infer.py --save_dir test_tipc/output/fastfcn_small/ --device=cpu --enable_mkldnn=True --cpu_threads=1 --config=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/ADEChallengeData2016/validation.txt --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1_results   > ./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1.log 2>&1 !
+
 ```
 如果运行失败，会输出：
 ```
----------------------- lite_train_lite_infer ------------------------
-Run falid with command - python3.7 train.py --config test_tipc/configs/fastfcn_small/fastfcn_small_v1_humanseg_192x192_mini_supervisely.yml --do_eval --save_interval 100 --seed 100    --save_dir=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null --iters=50     --batch_size=2     !  
-Run falid with command - python3.7 export_model.py --config test_tipc/configs/fastfcn_small/fastfcn_small_v1_humanseg_192x192_mini_supervisely.yml --model_path=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null!  
-Run falid with command - python3.7 infer.py --device=cpu --enable_mkldnn=True --cpu_threads=1 --config=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/mini_supervisely/test.txt --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1_results   > ./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1.log 2>&1 !  
-Run falid with command - python3.7 infer.py --device=cpu --enable_mkldnn=True --cpu_threads=6 --config=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/mini_supervisely/test.txt --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_6_precision_fp32_batchsize_1_results   > ./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_6_precision_fp32_batchsize_1.log 2>&1 !
+Run faild with command - python3.7 train.py --config test_tipc/configs/fastfcn_small/fastfcn_ade20k_520x520_120k.yml  --save_interval 10 --seed 10    --save_dir=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null --iters=10     --batch_size=2     !  
+Run faild with command - python3.7 export_model.py --config test_tipc/configs/fastfcn_small/fastfcn_ade20k_520x520_120k.yml --model_path=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null!
+Run faild with command - python3.7 infer.py --save_dir test_tipc/output/fastfcn_small/ --device=cpu --enable_mkldnn=True --cpu_threads=1 --config=./test_tipc/output/fastfcn_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/ADEChallengeData2016/validation.txt --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1_results   > ./test_tipc/output/fastfcn_small/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1.log 2>&1 !
 ......
 ```
 可以很方便的根据`results_python.log`中的内容判定哪一个指令运行错误。
