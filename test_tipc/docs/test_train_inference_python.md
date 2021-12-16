@@ -6,18 +6,27 @@ Linux端基础训练预测功能测试的主程序为`test_train_inference_pytho
 
 - 训练相关：
 
-| 算法名称 | 模型名称 | 单机单卡 |
-|  :----  |   :----  |    :----  |
-|  CNN  | dmnet_small | 正常训练 |
+| 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 | 模型压缩（单机多卡） |
+|  :----  |   :----  |    :----  |  :----   |  :----   |  :----   |
+| DeepLabv3p     |PP-HumanSeg-Server (DeepLabv3p_resnet50)| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |  |  |
+|  HRNet     |PP-HumanSeg-mobile (HRNet_W18_small)  |  正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |  |  |
+| ConnectNet | PP-HumanSeg-Lite| 正常训练  | 正常训练  |  |  |
+| BiSeNetV2 | BiSeNetV2 | 正常训练  | 正常训练  |  |  |
+| OCRNet | OCRNet_HRNetW18 | 正常训练  | 正常训练  |  |  |
+| Segformer | Segformer_B0 | 正常训练  | 正常训练  |  |  |
+| STDC | STDC_STDC1 | 正常训练  | 正常训练  |  |  |
+| MODNet | PP-Matting | 正常训练  | 正常训练  |  |  |
+| DMNet | dmnet_small | 正常训练  | 正常训练  |  |  |
 
 
 - 预测相关：基于训练是否使用量化，可以将训练产出的模型可以分为`正常模型`和`量化模型`，这两类模型对应的预测功能汇总如下，
 
 | 模型类型 |device | batchsize | tensorrt | mkldnn | cpu多线程 |
 |  ----   |  ---- |   ----   |  :----:  |   :----:   |  :----:  |
-| 正常模型 | GPU | 1/2 | fp32 | - | - |
-| 正常模型 | CPU | 1/2 | - | - | 支持 |
-
+| 正常模型 | GPU | 1/6 | fp32/fp16 | - | - |
+| 正常模型 | CPU | 1/6 | - | fp32/fp16 | 支持 |
+| 量化模型 | GPU | 1/6 | int8 | - | - |
+| 量化模型 | CPU | 1/6 | - | int8 | 支持 |
 
 ## 2. 测试流程
 
