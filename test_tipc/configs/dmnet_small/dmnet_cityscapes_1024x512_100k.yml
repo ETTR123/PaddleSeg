@@ -31,7 +31,6 @@ val_dataset:
 
 model:
   type: DMNet
-  pretrained: test_tipc/output/dmnet_small/model.pdparams
   backbone:
     type: ResNet101_vd
     output_stride: 8
