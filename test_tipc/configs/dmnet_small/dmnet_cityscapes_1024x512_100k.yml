@@ -23,7 +23,7 @@ train_dataset:
 val_dataset:
   type: Dataset
   dataset_root: test_tipc/data/cityscapes
-  val_path: test_tipc/data/cityscapes/infer.list
+  val_path: test_tipc/data/cityscapes/val.list
   num_classes: 19
   transforms:
     - type: Normalize
