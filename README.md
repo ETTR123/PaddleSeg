@@ -1,30 +1,35 @@
-# ENCNet_paddle
+#BiSeNetV1
 
 
 ## 1 简介
-
-本项目基于paddlepaddle框架复现了ENCNet语义分割模型，ENCNet提取出特征图中的类别信息，同时引出注意力机制损失(se_loss)来提升网络性能。
+本项目基于paddlepaddle框架复现了BiSeNet语义分割模型，BiSeNet利用Attention Refinement Module 和 Feature Fusion Module来提升网络性能。
 
 **论文：**
-- [1] Hang Zhang, Kristin Dana, Jianping Shi, Zhongyue Zhang, Xiaogang Wang, Ambrish Tyagi, Amit Agrawal. [Context Encoding for Semantic Segmentation](https://paperswithcode.com/paper/context-encoding-for-semantic-segmentation)
+- [1] Changqian Yu, Jingbo Wang, Chao Peng, Changxin Gao, Gang Yu, and Nong Sang. [BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation](https://paperswithcode.com/paper/bisenet-bilateral-segmentation-network-for)
 
 **项目参考：**
-- [https://github.com/open-mmlab/mmsegmentation/tree/master/configs/encnet](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/encnet)
+- [https://github.com/ycszen/TorchSeg](https://github.com/ycszen/TorchSeg)
 
 ## 2 复现精度
 >在CityScapes val数据集的测试效果如下表。
 
+
 |NetWork |steps|opt|image_size|batch_size|dataset|memory|card|mIou|config|weight|log|
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-|ENCNet|80K|SGD|1024x512|8|CityScapes|32G|4|78.70|[encnet_cityscapes_1024x512_80k.yml](configs/encnet/encnet_cityscapes_1024x512_80k.yml)|[link](https://bj.bcebos.com/v1/ai-studio-cluster-infinite-task/outputs/105022.tar?authorization=bce-auth-v1%2F0ef6765c1e494918bc0d4c3ca3e5c6d1%2F2021-11-24T10%3A37%3A31Z%2F-1%2F%2F1d0504cbdf4fac38dc60c1298e9b632e739d1a2f952485056a8f50ff45f3344b)|[-](-)|
+|BiSeNet|160K|SGD|1024x512|4|CityScapes|32G|4|75.19|[bisenetv1_cityscapes_1024x512_160k.yml](configs/bisenetv1/bisenetv1_cityscapes_1024x512_160k.yml)|[link](https://bj.bcebos.com/v1/ai-studio-cluster-infinite-task/outputs/105278.tar?authorization=bce-auth-v1%2F0ef6765c1e494918bc0d4c3ca3e5c6d1%2F2021-11-25T19%3A25%3A13Z%2F-1%2F%2F3b5cf09d2869e0445166814922739cc648b95396256b7eb7f6a1e07cbcf01021)|[log]()|
 
+## 3 数据集
+[CityScapes dataset](https://www.cityscapes-dataset.com/)
 
-## 3 环境依赖
+- 数据集大小:
+    - 训练集: 2975
+    - 验证集: 500
+
+## 4 环境依赖
 - 硬件: Tesla V100 * 4
 
 - 框架:
     - PaddlePaddle == 2.2.0
-
 
 ## 快速开始
 **tipc**
@@ -34,39 +39,39 @@
 
 ```python
 
-python3.7 export_model.py --config test_tipc/configs/encnet_small/encnet_cityscapes_1024x512_80k.yml --model_path=./test_tipc/output/encnet_small/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/encnet_small/norm_gpus_0_autocast_null
+python3.7 export_model.py --config test_tipc/configs/bisenetv1/bisenetv1_cityscapes_1024x512_160k.yml --model_path=./test_tipc/output/bisenetv1/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/bisenetv1/
 ```
 
 **预测**
 
 **原图**
-![原图](https://github.com/ETTR123/PaddleSeg/blob/encnet/test_tipc/data/origin.png)
+![原图](test_tipc/data/origin.png)
 
 ```python
 
-python3.7 infer.py --save_dir test_tipc/output/encnet_small/ --device=gpu --use_trt=False --precision=fp32 --config=./test_tipc/output/encnet_small/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/cityscapes/infer.list --benchmark=True
+python3.7 infer.py --save_dir test_tipc/output/bisenetv1/ --device=gpu --use_trt=False --precision=fp32 --config=./test_tipc/output/bisenetv1/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/cityscapes/infer.list --benchmark=True
 
 ```
 
 **结果**
-![结果](https://github.com/ETTR123/PaddleSeg/blob/encnet/test_tipc/data/gt.png)
+![结果](test_tipc/data/gt.png)
 
 ```
 #predict
 Class IoU:
-[0.9901 0.9567 0.9707 0.     0.     0.5505 0.     0.7629 0.9697 0.
- 0.7794 0.9009 0.     0.9517 0.     0.     0.     0.7787 0.7506]
+[0.9832 0.9334 0.979  0.     0.     0.6956 0.     0.8139 0.9705 0.
+ 0.8294 0.9199 0.     0.9541 0.     0.     0.     0.7803 0.8127]
 Class Acc:
-[0.9925 0.9837 0.9747 0.     0.     0.9782 0.     0.9164 0.9841 0.
- 0.9995 0.9825 0.     0.98   0.     0.     0.     0.9644 0.9798]
+[0.9852 0.9869 0.9881 0.     0.     0.8212 0.     0.8451 0.9818 0.
+ 0.9833 0.9834 0.     0.9754 0.     0.     0.     0.9607 0.9394]
 
- #inference
+#inference
 Class IoU:
-[0.9901 0.9569 0.9707 0.     0.     0.5505 0.     0.7628 0.9697 0.
- 0.7794 0.9007 0.     0.9516 0.     0.     0.     0.7784 0.7506]
+[0.9832 0.9334 0.979  0.     0.     0.6956 0.     0.8139 0.9705 0.
+ 0.8294 0.9199 0.     0.9541 0.     0.     0.     0.7803 0.8127]
 Class Acc:
-[0.9925 0.9837 0.9747 0.     0.     0.9782 0.     0.9164 0.9842 0.
- 0.9995 0.9825 0.     0.98   0.     0.     0.     0.9642 0.9798]
+[0.9852 0.9869 0.9881 0.     0.     0.8212 0.     0.8451 0.9818 0.
+ 0.9833 0.9834 0.     0.9754 0.     0.     0.     0.9607 0.9394]
 ```
 
 **tipc测试结果截图**
@@ -95,4 +100,4 @@ Class Acc:
 │  val.py  
 ```
 **说明**
- 感谢朗督复现ENCNet[https://github.com/justld/ENCNet_paddle](https://github.com/justld/ENCNet_paddle)
+ 感谢朗督复现BiSeNetV1[https://github.com/justld/BiSNetV1_paddle](https://github.com/justld/BiSNetV1_paddle)

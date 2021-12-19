@@ -1,11 +1,42 @@
 _base_: '../_base_/cityscapes.yml'
 
+train_dataset:
+  type: Dataset
+  dataset_root: test_tipc/data/cityscapes
+  train_path: test_tipc/data/cityscapes/train.list
+  num_classes: 19
+  transforms:
+    - type: ResizeStepScaling
+      min_scale_factor: 0.5
+      max_scale_factor: 2.0
+      scale_step_size: 0.25
+    - type: RandomPaddingCrop
+      crop_size: [1024, 512]
+    - type: RandomHorizontalFlip
+    - type: RandomDistort
+      brightness_range: 0.4
+      contrast_range: 0.4
+      saturation_range: 0.4
+    - type: Normalize
+  mode: train
+
+val_dataset:
+  type: Dataset
+  dataset_root: test_tipc/data/cityscapes
+  val_path: test_tipc/data/cityscapes/val.list
+  num_classes: 19
+  transforms:
+    - type: Normalize
+  mode: val
+
+
 model:
   type: BiseNetV1
+  pretrained: Null
   backbone:
     type: ResNet18_vd
     output_stride: 8
-    pretrained: https://bj.bcebos.com/paddleseg/dygraph/resnet18_vd_ssld.tar.gz
+    pretrained: https://bj.bcebos.com/paddleseg/dygraph/resnet18_vd_ssld_v2.tar.gz
 
 optimizer:
   type: sgd

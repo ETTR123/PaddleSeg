@@ -62,6 +62,7 @@ class BiseNetV1(nn.Layer):
         self.ffm = FeatureFusion(conv_channel * 2, conv_channel * 2, 1)
 
         self.pretrained = pretrained
+        self.init_weight()
 
     def init_weight(self):
         if self.pretrained is not None:
