@@ -1,12 +1,12 @@
 ===========================train_params===========================
-model_name:espenetv1
+model_name:espnetv1
 python:python3.7
 gpu_list:0
 Global.use_gpu:null|null
 Global.auto_cast:null
---iters:lite_train_lite_infer=10
+--iters:lite_train_lite_infer=1
 --save_dir:
---batch_size:lite_train_lite_infer=2
+--batch_size:lite_train_lite_infer=1
 Global.pretrained_model:null
 train_model_name:best_model/model.pdparams
 train_infer_img_dir:test_tipc/data/cityscapes/infer.list
@@ -27,7 +27,7 @@ null:null
 ===========================export_params===========================
 --save_dir:
 --model_path:
-norm_export:export_model.py --config test_tipc/configs/espnetv1/espnetv1_cityscapes_1024x512_120k.yml
+norm_export:export_model.py --config test_tipc/configs/espnetv1/espnetv1_cityscapes_1024x512_120k.yml --input_shape 1 3 1024 2048
 quant_export:null
 fpgm_export:null
 distill_export:null
@@ -35,7 +35,7 @@ export1:null
 export2:null
 ===========================infer_params===========================
 infer_model:./test_tipc/output/norm_gpus_0_autocast_null/model.pdparams
-infer_export:export_model.py --config test_tipc/configs/espnetv1/espnetv1_cityscapes_1024x512_120k.yml
+infer_export:export_model.py --config test_tipc/configs/espnetv1/espnetv1_cityscapes_1024x512_120k.yml --input_shape 1 3 1024 2048
 infer_quant:False
 inference:infer.py --save_dir test_tipc/output/espnetv1/
 --device:cpu|gpu
@@ -49,4 +49,4 @@ inference:infer.py --save_dir test_tipc/output/espnetv1/
 --save_log_path:null
 --benchmark:True
 --save_dir:
---model_name:bisenetv1
+--model_name:espnetv1
