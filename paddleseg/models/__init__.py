@@ -53,3 +53,4 @@ from .encnet import ENCNet
 from .fastfcn import FastFCN
 from .dmnet import DMNet
 from .bisenetv1 import BiseNetV1
+from .espnetv1 import ESPNetV1
