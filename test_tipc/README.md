@@ -31,7 +31,7 @@
 ```shell
 test_tipc/
 ├── configs/  # 配置文件目录
-    ├── deeplabv2   # encnet_small模型的测试配置文件目录
+    ├── deeplabv2   # 模型的测试配置文件目录
         ├── train_infer_python.txt      # 测试Linux上python训练预测（基础训练预测）的配置文件
         ├── deeplabv2_resnet101_os8_voc_semi_321x321_20k.yml
 ├── results/   # 预测结果

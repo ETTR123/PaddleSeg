@@ -2,7 +2,6 @@
 
 
 ## 1 简介
-![images](images/network.png)  
 本项目基于paddlepaddle框架复现了AdvSemiSeg半监督语义分割学习算法，基于Deeplabv2在Pascal VOC2012数据集上进行了实验。
 **论文：**
 - [1] Wei-Chih Hung, Yi-Hsuan Tsai, Yan-Ting Liou, Yen-Yu Lin, and Ming-Hsuan Yang
