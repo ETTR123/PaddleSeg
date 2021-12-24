@@ -9,11 +9,11 @@ Global.auto_cast:null
 --batch_size:lite_train_infer=2
 Global.pretrained_model:null
 train_model_name:best_model/model.pdparams
-train_infer_img_dir:test_tipc/data/mini_supervisely/test.txt
+train_infer_img_dir:test_tipc/data/pascalvoc/VOCdevkit/VOC2012/infer.txt
 null:null
 ##
 trainer:norm
-norm_train:train.py --config test_tipc/configs/advsemiseg_deeplabv2_res101_humanseg/advsemiseg_deeplabv2_res101_humanseg_192x192_mini_supervisely.yml --do_eval --save_interval 100 --seed 100 --label_ratio 0.125
+norm_train:train.py --config test_tipc/configs/deeplabv2/deeplabv2_resnet101_os8_voc_semi_321x321_20k.yml --do_eval --save_interval 100 --seed 100 --label_ratio 0.125
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -27,7 +27,7 @@ null:null
 ===========================export_params===========================
 --save_dir:
 --model_path:
-norm_export:export.py --config test_tipc/configs/advsemiseg_deeplabv2_res101_humanseg/advsemiseg_deeplabv2_res101_humanseg_192x192_mini_supervisely.yml
+norm_export:export_model.py --config test_tipc/configs/deeplabv2/deeplabv2_resnet101_os8_voc_semi_321x321_20k.yml
 quant_export:null
 fpgm_export:null
 distill_export:null
@@ -35,18 +35,18 @@ export1:null
 export2:null
 ===========================infer_params===========================
 infer_model:./test_tipc/output/norm_gpus_0_autocast_null/model.pdparams
-infer_export:export.py --config test_tipc/configs/advsemiseg_deeplabv2_res101_humanseg/advsemiseg_deeplabv2_res101_humanseg_192x192_mini_supervisely.yml
+infer_export:export_model.py --config test_tipc/configs/deeplabv2/deeplabv2_resnet101_os8_voc_semi_321x321_20k.yml
 infer_quant:False
-inference:deploy/python/infer.py
+inference:infer.py --save_dir test_tipc/output/deeplabv2_semi/
 --device:cpu|gpu
 --enable_mkldnn:True|False
 --cpu_threads:1|6
 --batch_size:1
 --use_trt:False
 --precision:fp32|int8|fp16
-null:
---image_path:./test_tipc/data/mini_supervisely/test.txt
---save_log_path:./test_tipc/results
+--config:
+--image_path:test_tipc/data/pascalvoc/VOCdevkit/VOC2012/infer.txt
+--save_log_path:null
 --benchmark:True
---config:./test_tipc/output/norm_gpus_0_autocast_null/deploy.yaml
+--save_dir:
 --model_name:deeplabv2_semi

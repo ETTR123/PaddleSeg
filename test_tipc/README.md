@@ -23,7 +23,7 @@
 
 | 算法论文 | 模型名称 | 基础<br>训练预测 | 更多<br>训练方式 | 模型压缩 |  其他预测部署  |
 | :--- | :--- |  :----:  |  :----  |   :----  |   :----  |
-| ESPNet | espnetv1 | 支持 | - | - | - |
+| AdvSemiSeg | deeplabv2 | 支持 | - | - | - |
 
 ## 3. 测试工具简介
 ### 目录介绍
@@ -31,9 +31,9 @@
 ```shell
 test_tipc/
 ├── configs/  # 配置文件目录
-    ├── bisenetv1   # encnet_small模型的测试配置文件目录
+    ├── deeplabv2   # encnet_small模型的测试配置文件目录
         ├── train_infer_python.txt      # 测试Linux上python训练预测（基础训练预测）的配置文件
-        ├── espnetv1_cityscapes_1024x512_120k.yml
+        ├── deeplabv2_resnet101_os8_voc_semi_321x321_20k.yml
 ├── results/   # 预测结果
 ├── prepare.sh                        # 完成test_*.sh运行所需要的数据和模型下载
 ├── test_train_inference_python.sh    # 测试python训练预测的主程序
@@ -61,8 +61,8 @@ bash test_tipc/test_train_inference_python.sh configs/[model_name]/[params_file_
 ```shell
 # 功能：准备数据
 # 格式：bash + 运行脚本 + 参数1: 配置文件选择 + 参数2: 模式选择
-bash test_tipc/prepare.sh ./test_tipc/configs/espnetv1/train_infer_python.txt 'lite_train_lite_infer'
+bash test_tipc/prepare.sh test_tipc/configs/deeplabv2/train_infer_python.txt 'lite_train_lite_infer'
 # 功能：运行测试
 # 格式：bash + 运行脚本 + 参数1: 配置文件选择 + 参数2: 模式选择
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/espnetv1/train_infer_python.txt 'lite_train_lite_infer'
+bash test_tipc/test_train_inference_python.sh test_tipc/configs/deeplabv2/train_infer_python.txt 'lite_train_lite_infer'
 ```

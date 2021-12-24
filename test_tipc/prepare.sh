@@ -59,5 +59,8 @@ elif [ ${model_name} == "ppmatting" ];then
     rm -rf ./test_tipc/data/PPM-100
     wget -nc -P ./test_tipc/data/ https://paddleseg.bj.bcebos.com/matting/datasets/PPM-100.zip
     cd ./test_tipc/data/ && unzip PPM-100.zip && cd -
-
+elif [ ${model_name} == "deeplabv2_semi" ];then
+    rm -rf ./test_tipc/data/pascalvoc
+    wget -nc -P ./test_tipc/data/ https://bj.bcebos.com/v1/ai-studio-online/fe90e84f061c42ef98a0cc0286e2116a8f29321b489d42f0b4ea7d87c0482cdc?responseContentDisposition=attachment%3B%20filename%3Dpascalvoc.zip
+    cd ./test_tipc/data/ && unzip fe90e84f061c42ef98a0cc0286e2116a8f29321b489d42f0b4ea7d87c0482cdc?responseContentDisposition=attachment%3B%20filename%3Dpascalvoc.zip && cd -
 fi

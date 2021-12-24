@@ -8,7 +8,7 @@ Linux端基础训练预测功能测试的主程序为`test_train_inference_pytho
 
 | 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 | 模型压缩（单机多卡） |
 |  :----  |   :----  |    :----  |  :----   |  :----   |  :----   |
-| ESPNet | espnetv1 | 正常训练  | 正常训练  |  |  |
+| AdvSemiSeg | deeplabv2 | 正常训练  | 正常训练  |  |  |
 
 
 
@@ -39,9 +39,17 @@ Linux端基础训练预测功能测试的主程序为`test_train_inference_pytho
 `test_train_inference_python.sh`包含5种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，该项目目前只支持模式1：
 
 - 模式1：lite_train_lite_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
+
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/espnetv1/train_infer_python.txt 'lite_train_lite_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/espnetv1/train_infer_python.txt 'lite_train_lite_infer'
+bash test_tipc/prepare.sh test_tipc/configs/deeplabv2/train_infer_python.txt 'lite_train_lite_infer'
+```
+
+```shell
+准备好数据集之后请先将test_tipc/data/infer.txt移至test_tipc/data/pascalvoc/VOCdevkit/VOC2012/目录下再运行下一条命令。
+```
+
+```shell
+bash test_tipc/test_train_inference_python.sh test_tipc/configs/deeplabv2/train_infer_python.txt 'lite_train_lite_infer'
 ```
 
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如'lite_train_lite_infer'模式下，会运行训练+inference的链条，因此，在`test_tipc/output`文件夹有以下文件：
@@ -56,16 +64,16 @@ test_tipc/output/
 其中`results_python.log`中包含了每条指令的运行状态，如果运行成功会输出：
 ```
 
-Run successfully with command - python3.7 train.py --config test_tipc/configs/espnetv1/espnetv1_cityscapes_1024x512_120k.yml --do_eval --save_interval 100 --seed 100    --save_dir=./test_tipc/output/espnetv1/norm_gpus_0_autocast_null --iters=1     --batch_size=1     !
-Run successfully with command - python3.7 export_model.py --config test_tipc/configs/espnetv1/espnetv1_cityscapes_1024x512_120k.yml --input_shape 1 3 1024 2048 --model_path=./test_tipc/output/espnetv1/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/espnetv1/norm_gpus_0_autocast_null!  
-Run successfully with command - python3.7 infer.py --save_dir test_tipc/output/espnetv1/ --device=cpu --enable_mkldnn=True --cpu_threads=1 --config=./test_tipc/output/espnetv1/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/cityscapes/infer.list --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/espnetv1/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1_results   > ./test_tipc/output/espnetv1/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1.log 2>&1 !  
+Run successfully with command - python3.7 train.py --config test_tipc/configs/deeplabv2/deeplabv2_resnet101_os8_voc_semi_321x321_20k.yml --do_eval --save_interval 100 --seed 100 --label_ratio 0.125    --save_dir=./test_tipc/output/deeplabv2_semi/norm_gpus_0_autocast_null  
+Run successfully with command - python3.7 export_model.py --config test_tipc/configs/deeplabv2/deeplabv2_resnet101_os8_voc_semi_321x321_20k.yml --model_path=./test_tipc/output/deeplabv2_semi/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/deeplabv2_semi/norm_gpus_0_autocast_null!
+Run successfully with command - python3.7 infer.py --save_dir test_tipc/output/deeplabv2_semi/ --device=cpu --enable_mkldnn=True --cpu_threads=1 --config=./test_tipc/output/deeplabv2_semi/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/pascalvoc/VOCdevkit/VOC2012/infer.txt --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/deeplabv2_semi/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1_results   > ./test_tipc/output/deeplabv2_semi/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1.log 2>&1 !
 
 
 ```
 如果运行失败，会输出：
 ```
-Run faild with command - python3.7 train.py --config test_tipc/configs/espnetv1/espnetv1_cityscapes_1024x512_120k.yml --do_eval --save_interval 100 --seed 100    --save_dir=./test_tipc/output/espnetv1/norm_gpus_0_autocast_null --iters=1     --batch_size=1     !
-Run faild with command - python3.7 export_model.py --config test_tipc/configs/espnetv1/espnetv1_cityscapes_1024x512_120k.yml --input_shape 1 3 1024 2048 --model_path=./test_tipc/output/espnetv1/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/espnetv1/norm_gpus_0_autocast_null!  
-Run faild with command - python3.7 infer.py --save_dir test_tipc/output/espnetv1/ --device=cpu --enable_mkldnn=True --cpu_threads=1 --config=./test_tipc/output/espnetv1/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/cityscapes/infer.list --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/espnetv1/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1_results   > ./test_tipc/output/espnetv1/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1.log 2>&1 !  
+Run faild with command - python3.7 train.py --config test_tipc/configs/deeplabv2/deeplabv2_resnet101_os8_voc_semi_321x321_20k.yml --do_eval --save_interval 100 --seed 100 --label_ratio 0.125    --save_dir=./test_tipc/output/deeplabv2_semi/norm_gpus_0_autocast_null  
+Run faild with command - python3.7 export_model.py --config test_tipc/configs/deeplabv2/deeplabv2_resnet101_os8_voc_semi_321x321_20k.yml --model_path=./test_tipc/output/deeplabv2_semi/norm_gpus_0_autocast_null/best_model/model.pdparams --save_dir=./test_tipc/output/deeplabv2_semi/norm_gpus_0_autocast_null!
+Run faild with command - python3.7 infer.py --save_dir test_tipc/output/deeplabv2_semi/ --device=cpu --enable_mkldnn=True --cpu_threads=1 --config=./test_tipc/output/deeplabv2_semi/norm_gpus_0_autocast_null//deploy.yaml --batch_size=1 --image_path=test_tipc/data/pascalvoc/VOCdevkit/VOC2012/infer.txt --benchmark=True --precision=fp32 --save_dir=./test_tipc/output/deeplabv2_semi/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1_results   > ./test_tipc/output/deeplabv2_semi/python_infer_cpu_usemkldnn_True_threads_1_precision_fp32_batchsize_1.log 2>&1 !
 ```
 可以很方便的根据`results_python.log`中的内容判定哪一个指令运行错误。

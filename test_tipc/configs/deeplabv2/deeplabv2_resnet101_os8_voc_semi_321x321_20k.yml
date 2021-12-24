@@ -1,5 +1,5 @@
 batch_size: 10
-iters: 20000
+iters: 10
 
 model:
   type: DeepLabV2
@@ -16,7 +16,7 @@ model:
 
 train_dataset:
   type: PascalVOC
-  dataset_root: /home/aistudio/data/data4379/pascalvoc/VOCdevkit/
+  dataset_root: test_tipc/data/pascalvoc/VOCdevkit/
   transforms:
     - type: ResizeStepScaling
       min_scale_factor: 0.5
@@ -30,17 +30,20 @@ train_dataset:
       contrast_range: 0.4
       saturation_range: 0.4
     - type: Normalize
-  mode: trainaug
+  mode: train
 
 val_dataset:
   type: PascalVOC
-  dataset_root: /home/aistudio/data/data4379/pascalvoc/VOCdevkit/
+  dataset_root: test_tipc/data/pascalvoc/VOCdevkit/
   transforms:
     - type: Padding
       target_size: [512, 512]
     - type: Normalize
   mode: val
 
+export:
+  transforms:
+    - type: Normalize
 
 optimizer:
   type: sgd
