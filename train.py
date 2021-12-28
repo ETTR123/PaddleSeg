@@ -26,80 +26,75 @@ from paddleseg.core import train
 def parse_args():
     parser = argparse.ArgumentParser(description='Model training')
     # params of training
-    parser.add_argument(
-        "--config", dest="cfg", help="The config file.", default=None, type=str)
-    parser.add_argument(
-        '--iters',
-        dest='iters',
-        help='iters for training',
-        type=int,
-        default=None)
-    parser.add_argument(
-        '--batch_size',
-        dest='batch_size',
-        help='Mini batch size of one gpu or cpu',
-        type=int,
-        default=None)
-    parser.add_argument(
-        '--learning_rate',
-        dest='learning_rate',
-        help='Learning rate',
-        type=float,
-        default=None)
+    parser.add_argument("--config",
+                        dest="cfg",
+                        help="The config file.",
+                        default=None,
+                        type=str)
+    parser.add_argument('--iters',
+                        dest='iters',
+                        help='iters for training',
+                        type=int,
+                        default=None)
+    parser.add_argument('--batch_size',
+                        dest='batch_size',
+                        help='Mini batch size of one gpu or cpu',
+                        type=int,
+                        default=None)
+    parser.add_argument('--learning_rate',
+                        dest='learning_rate',
+                        help='Learning rate',
+                        type=float,
+                        default=None)
     parser.add_argument(
         '--save_interval',
         dest='save_interval',
         help='How many iters to save a model snapshot once during training.',
         type=int,
         default=1000)
-    parser.add_argument(
-        '--resume_model',
-        dest='resume_model',
-        help='The path of resume model',
-        type=str,
-        default=None)
-    parser.add_argument(
-        '--save_dir',
-        dest='save_dir',
-        help='The directory for saving the model snapshot',
-        type=str,
-        default='./output')
-    parser.add_argument(
-        '--keep_checkpoint_max',
-        dest='keep_checkpoint_max',
-        help='Maximum number of checkpoints to save',
-        type=int,
-        default=5)
-    parser.add_argument(
-        '--num_workers',
-        dest='num_workers',
-        help='Num workers for data loader',
-        type=int,
-        default=0)
-    parser.add_argument(
-        '--do_eval',
-        dest='do_eval',
-        help='Eval while training',
-        action='store_true')
-    parser.add_argument(
-        '--log_iters',
-        dest='log_iters',
-        help='Display logging information at every log_iters',
-        default=10,
-        type=int)
+    parser.add_argument('--resume_model',
+                        dest='resume_model',
+                        help='The path of resume model',
+                        type=str,
+                        default=None)
+    parser.add_argument('--save_dir',
+                        dest='save_dir',
+                        help='The directory for saving the model snapshot',
+                        type=str,
+                        default='./output')
+    parser.add_argument('--keep_checkpoint_max',
+                        dest='keep_checkpoint_max',
+                        help='Maximum number of checkpoints to save',
+                        type=int,
+                        default=5)
+    parser.add_argument('--num_workers',
+                        dest='num_workers',
+                        help='Num workers for data loader',
+                        type=int,
+                        default=0)
+    parser.add_argument('--do_eval',
+                        dest='do_eval',
+                        help='Eval while training',
+                        action='store_true')
+    parser.add_argument('--log_iters',
+                        dest='log_iters',
+                        help='Display logging information at every log_iters',
+                        default=10,
+                        type=int)
     parser.add_argument(
         '--use_vdl',
         dest='use_vdl',
         help='Whether to record the data to VisualDL during training',
         action='store_true')
-    parser.add_argument(
-        '--seed',
-        dest='seed',
-        help='Set the random seed during training.',
-        default=None,
-        type=int)
-    parser.add_argument(
-        '--fp16', dest='fp16', help='Whther to use amp', action='store_true')
+    parser.add_argument('--seed',
+                        dest='seed',
+                        help='Set the random seed during training.',
+                        default=None,
+                        type=int)
+    parser.add_argument('--fp16',
+                        dest='fp16',
+                        help='Whther to use amp',
+                        action='store_true')
     parser.add_argument(
         '--data_format',
         dest='data_format',
@@ -111,10 +106,28 @@ def parse_args():
         '--profiler_options',
         type=str,
         default=None,
-        help='The option of train profiler. If profiler_options is not None, the train ' \
-            'profiler is enabled. Refer to the paddleseg/utils/train_profiler.py for details.'
+        help=
+        'The option of train profiler. If profiler_options is not None, the train '
+        'profiler is enabled. Refer to the paddleseg/utils/train_profiler.py for details.'
     )
-
+    parser.add_argument(
+        '--label_ratio',
+        type=float,
+        default=None,
+        help=
+        'The label_ratio. If label_ratio is not None, use semi training method.'
+        'and need to use --ssl_method to select semi-training gmethod')
+    parser.add_argument('--split_ids',
+                        help='The directory for split id file for datasets',
+                        type=str,
+                        default=None)
+    parser.add_argument(
+        '--ssl_method',
+        type=str,
+        default='AdvSemiSeg',
+        help=
+        'The semi-training method. If label_ratio is not None, use semi training method.'
+        'and need to use --ssl_method to select semi-training gmethod')
     return parser.parse_args()
 
 
@@ -138,11 +151,10 @@ def main(args):
     if not args.cfg:
         raise RuntimeError('No configuration file specified.')
 
-    cfg = Config(
-        args.cfg,
-        learning_rate=args.learning_rate,
-        iters=args.iters,
-        batch_size=args.batch_size)
+    cfg = Config(args.cfg,
+                 learning_rate=args.learning_rate,
+                 iters=args.iters,
+                 batch_size=args.batch_size)
 
     # Only support for the DeepLabv3+ model
     if args.data_format == 'NHWC':
@@ -173,25 +185,51 @@ def main(args):
 
     config_check(cfg, train_dataset=train_dataset, val_dataset=val_dataset)
 
-    train(
-        cfg.model,
-        train_dataset,
-        val_dataset=val_dataset,
-        optimizer=cfg.optimizer,
-        save_dir=args.save_dir,
-        iters=cfg.iters,
-        batch_size=cfg.batch_size,
-        resume_model=args.resume_model,
-        save_interval=args.save_interval,
-        log_iters=args.log_iters,
-        num_workers=args.num_workers,
-        use_vdl=args.use_vdl,
-        losses=losses,
-        keep_checkpoint_max=args.keep_checkpoint_max,
-        test_config=cfg.test_config,
-        fp16=args.fp16,
-        profiler_options=args.profiler_options,
-        to_static_training=cfg.to_static_training)
+    if args.label_ratio is not None:
+        from semi.core.train import train_ssl
+        # 根据args选择训练算法
+        train_ssl(cfg,
+                  cfg.model,
+                  train_dataset,
+                  label_ratio=args.label_ratio,
+                  split_ids=args.split_ids,
+                  ssl_method=args.ssl_method,
+                  val_dataset=val_dataset,
+                  optimizer=cfg.optimizer,
+                  save_dir=args.save_dir,
+                  iters=cfg.iters,
+                  batch_size=cfg.batch_size,
+                  resume_model=args.resume_model,
+                  save_interval=args.save_interval,
+                  log_iters=args.log_iters,
+                  num_workers=args.num_workers,
+                  use_vdl=args.use_vdl,
+                  losses=losses,
+                  keep_checkpoint_max=args.keep_checkpoint_max,
+                  test_config=cfg.test_config,
+                  fp16=args.fp16,
+                  profiler_options=args.profiler_options,
+                  to_static_training=cfg.to_static_training)
+
+    else:
+        train(cfg.model,
+              train_dataset,
+              val_dataset=val_dataset,
+              optimizer=cfg.optimizer,
+              save_dir=args.save_dir,
+              iters=cfg.iters,
+              batch_size=cfg.batch_size,
+              resume_model=args.resume_model,
+              save_interval=args.save_interval,
+              log_iters=args.log_iters,
+              num_workers=args.num_workers,
+              use_vdl=args.use_vdl,
+              losses=losses,
+              keep_checkpoint_max=args.keep_checkpoint_max,
+              test_config=cfg.test_config,
+              fp16=args.fp16,
+              profiler_options=args.profiler_options,
+              to_static_training=cfg.to_static_training)
 
 
 if __name__ == '__main__':
